@@ -1,4 +1,5 @@
 from crypt import methods
+import re
 from flask import Flask, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import RegisterForm, LoginForm
@@ -62,14 +63,14 @@ def show_user(username):
     You should ensure that only logged in users can access this page
     """
     
+  
     user = User.query.get_or_404(username)
-    if user:
-        session['username'] = user.username
-        return redirect(f"/users/{user.username}")
     
+    if session.get('username') is not None:
+        return render_template(f"user.html", user=user)        
     else:
         flash('Please Log In Before Trying To Access This Page!', 'danger')
-    return render_template('login.html')
+        return redirect('/')
     
     
     
