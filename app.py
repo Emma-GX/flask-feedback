@@ -31,7 +31,7 @@ def register():
     and last_name.
     
     POST: Process the registration form by adding a new user. 
-    Then redirect to /secret
+    Then redirect to /user
     """
     
     form = RegisterForm()
@@ -48,23 +48,29 @@ def register():
         db.session.commit()
         session['username'] = new_user.username
         flash(f"Welcome { new_user.username }! You Successfully Created Your Account", 'success')
-        return redirect('/secret')
+        return redirect('/user')
     
     else:
         return render_template('register.html', form=form)
     
 
-@app.route('/secret')
-def go_to_secret():
+@app.route('/users/<username>')
+def show_user(username):
     """Display a template the shows information about that user 
     (everything except for their password)
     
     You should ensure that only logged in users can access this page
     """
-    if "username" not in session:
-        flash("Please Log In!", 'danger')
-        return redirect('/')
-    return render_template('secrets.html') 
+    
+    user = User.query.get_or_404(username)
+    if user:
+        session['username'] = user.username
+        return redirect(f"/users/{user.username}")
+    
+    else:
+        flash('Please Log In Before Trying To Access This Page!', 'danger')
+    return render_template('login.html')
+    
     
     
 @app.route('/login', methods=['GET', 'POST']) 
@@ -73,7 +79,7 @@ def login():
     This form should accept a username and a password.
     
     POST: Process the login form, ensuring the user is authenticated 
-    and going to /secret if so 
+    and going to /user if so 
     """       
     form = LoginForm()
     
@@ -85,7 +91,7 @@ def login():
         if user:
             flash(f"Welcome { username }! You Successfully Logged In To Your Account", 'success')
             session['username'] = user.username
-            return redirect('/secret')
+            return redirect(f"/users/{user.username}")
     
         else:
             form.username.errors = ['Invalid username/password']
