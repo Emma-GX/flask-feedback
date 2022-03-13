@@ -12,7 +12,7 @@ body {
     padding: 5px;
 }
 
-p.danger {
+.danger {
     color: white;
     background-color: coral; 
     padding-left: 10px;

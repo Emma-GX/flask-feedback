@@ -1,3 +1,4 @@
+from crypt import methods
 from flask import Flask, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import RegisterForm, LoginForm
@@ -45,6 +46,7 @@ def register():
         new_user = User.register(username, password, email, first_name, last_name)
         db.session.add(new_user)
         db.session.commit()
+        session['username'] = new_user.username
         flash(f"Welcome { new_user.username }! You Successfully Created Your Account", 'success')
         return redirect('/secret')
     
@@ -53,8 +55,16 @@ def register():
     
 
 @app.route('/secret')
-def show_secrets():
-    return render_template('secrets.html')   
+def go_to_secret():
+    """Display a template the shows information about that user 
+    (everything except for their password)
+    
+    You should ensure that only logged in users can access this page
+    """
+    if "username" not in session:
+        flash("Please Log In!", 'danger')
+        return redirect('/')
+    return render_template('secrets.html') 
     
     
 @app.route('/login', methods=['GET', 'POST']) 
@@ -74,6 +84,7 @@ def login():
         user = User.authenticate(username, password)
         if user:
             flash(f"Welcome { username }! You Successfully Logged In To Your Account", 'success')
+            session['username'] = user.username
             return redirect('/secret')
     
         else:
@@ -81,11 +92,11 @@ def login():
     return render_template('login.html', form=form)
     
     
-    @app.route('/secret')
-    def go_to_secret():
-        """Display a template the shows information about that user 
-        (everything except for their password)
-        You should ensure that only logged in users can access this page
-        """
-        
-        return redirect('secrets.html')
+@app.route('/logout', methods=['POST'])
+def log_out_user():
+    """Clear any information from the session and redirect to /"""
+    
+    session.pop('username')
+    flash("Goodbye! You have been logged out!", 'success')
+    return redirect('/')
+       
