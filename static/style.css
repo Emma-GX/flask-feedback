@@ -2,6 +2,10 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+p {
+    font-weight: bold;
+}
+
 .success {
     color: white;
     background-color: green;

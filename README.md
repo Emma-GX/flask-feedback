@@ -1,4 +1,7 @@
-**YOU WILL NEED TO HAVE POSTGRESQL RUNNUNG TO USE THIS APP**
+**YOU WILL NEED TO HAVE POSTGRESQL RUNNING TO USE THIS APP**
+
+In the Ubuntu command line type:
+*sudo service postgresql start*
 
 **Flask Feedback**
 

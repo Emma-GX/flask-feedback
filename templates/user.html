@@ -3,16 +3,28 @@
 {% block title %}User{% endblock %}
 
 {% block content %} 
- 
-<h1>{{ user.first_name }} {{user.last_name}} Details</h1>
+<div>
+	<h1>{{ user.first_name }} {{user.last_name}} Details</h1>
 
-<ul>
-	<li>Username: {{ user.username }}</li>
-	<li>First Name: {{ user.first_name }}</li>
-	<li>Last Name: {{ user.last_name }}</li>
-	<li>{{ user.email }}</li>
-</ul> 
+	<ul>
+		<li>Username: {{ user.username }}</li>
+		<li>First Name: {{ user.first_name }}</li>
+		<li>Last Name: {{ user.last_name }}</li>
+		<li>{{ user.email }}</li>
+	</ul> 
+</div> 
 
+<div>
+	<h2>Feedback</h2>
+	<ul>
+
+        {% for feedback in user.feedbacks %}
+        <li>{{ user.feedbacks.title }}</li>
+		<li>{{ user.feedbacks.content }}</li>
+        {% endfor %}
+    
+    </ul>	
+</div>
 <form action="/logout" method="POST">
 	<button type="submit">Log Out</button>
 </form>

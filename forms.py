@@ -1,11 +1,12 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField
+from wtforms import StringField, PasswordField, EmailField, TextAreaField
 from wtforms.validators import InputRequired
 
 
 class RegisterForm(FlaskForm):
     username = StringField("Username",
-                           validators=[InputRequired()])
+                           validators=[InputRequired()],
+                           render_kw={'autofocus': True})
     
     password = PasswordField("Password",
                              validators=[InputRequired()])
@@ -24,3 +25,10 @@ class LoginForm(FlaskForm):
     password = PasswordField("Password",
                              validators=[InputRequired()])   
     
+
+class FeedbackForm(FlaskForm):
+    title = StringField("Title",
+                        validators=[InputRequired()])
+    
+    content = TextAreaField("Feedback",
+                            validators=[InputRequired()])

@@ -29,6 +29,8 @@ class User(db.Model):
     last_name = db.Column(db.String(30),
                           nullable = False)
     
+    # feedback = db.relationship("Feedback", backref="user", cascade="all, delete-orphan")
+    
     @classmethod
     # cls is refering to User, but this is a class method so
     # using cls which is the standard way of doing things on
@@ -74,4 +76,6 @@ class Feedback(db.Model):
                         nullable = False)
     username = db.Column(db.String(20),
                          db.ForeignKey('users.username'),
-                         nullable = False)      
+                         nullable = False)   
+    
+    user =  db.relationship('User', backref="feedbacks")  

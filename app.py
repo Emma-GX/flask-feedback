@@ -2,9 +2,9 @@ from crypt import methods
 import re
 from flask import Flask, render_template, redirect, flash, session
 from flask_debugtoolbar import DebugToolbarExtension
-from forms import RegisterForm, LoginForm
+from forms import RegisterForm, LoginForm, FeedbackForm
 
-from models import db, connect_db, User
+from models import db, connect_db, User, Feedback
 
 app = Flask(__name__)
 
@@ -24,7 +24,6 @@ def redirect_to_register():
     return redirect('/register')
 
  
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     """GET: Show a form that when submitted will register/create a user. 
@@ -58,22 +57,20 @@ def register():
 @app.route('/users/<username>')
 def show_user(username):
     """Display a template the shows information about that user 
-    (everything except for their password)
+    (everything except for their password) and their posts
     
     You should ensure that only logged in users can access this page
-    """
-    
+    """    
   
     user = User.query.get_or_404(username)
     
     if session.get('username') is not None:
-        return render_template(f"user.html", user=user)        
+        return render_template("user.html", user=user)        
     else:
         flash('Please Log In Before Trying To Access This Page!', 'danger')
         return redirect('/')
     
-    
-    
+        
 @app.route('/login', methods=['GET', 'POST']) 
 def login():
     """GET: Show a form that when submitted will login a user. 
@@ -90,7 +87,7 @@ def login():
         
         user = User.authenticate(username, password)
         if user:
-            flash(f"Welcome { username }! You Successfully Logged In To Your Account", 'success')
+            flash(f"Welcome Back, { username }! You Successfully Logged In To Your Account", 'success')
             session['username'] = user.username
             return redirect(f"/users/{user.username}")
     
@@ -107,3 +104,34 @@ def log_out_user():
     flash("Goodbye! You have been logged out!", 'success')
     return redirect('/')
        
+       
+# @app.route()
+# def feedback():
+#     """Display a form to add feedback Make sure that only the user who 
+#     is logged in can see this form
+    
+#     Add a new piece of feedback and redirect to /users/<username>
+#     — Make sure that only the user who is logged in can successfully add feedback
+#     """
+    
+    
+    
+@app.route('/users/<username>/feedback/add', methods=['GET', 'POST'])
+def show_user_form(username):
+    """Display a template the shows information about that user 
+    (everything except for their password)
+    
+    You should ensure that only logged in users can access this page
+    """
+    
+  
+    user = User.query.get_or_404(username)
+    
+ 
+    
+    if session.get('username') is not None:
+        form = FeedbackForm()
+        return render_template(f"feedback.html", user=user)        
+    else:
+        flash('Please Log In Before Trying To Access This Page!', 'danger')
+        return redirect('/')
