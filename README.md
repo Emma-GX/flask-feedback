@@ -172,4 +172,5 @@ Once the user clicks on that link, take them to a form to reset their password (
 Once the form has been submitted, update the password in the database and delete the token created for that user
 
 Solution
+
 [View our solutions](http://curric.rithmschool.com/springboard/exercises/flask-feedback/solution/index.html)
