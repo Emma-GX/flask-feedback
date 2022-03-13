@@ -1,5 +1,36 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
 .success {
     color: white;
-    background-color: coral;
+    background-color: green;
     width: 500px;
+    border-radius: 5px;
+    padding-left: 7px;
+    border: 1px solid lightgreen;
+    padding: 5px;
 }
+
+p.danger {
+    color: white;
+    background-color: coral; 
+    padding-left: 10px;
+    width: 210px;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid red;
+}
+
+button {
+    display: inline;
+    margin-right: 10px;
+    padding: 5px;
+    background-color: aquamarine;
+    border: 1px solid lightblue;
+    border-radius: 5px;
+}
+ a {
+    text-decoration: none; 
+    color: black;
+ }

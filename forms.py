@@ -17,3 +17,10 @@ class RegisterForm(FlaskForm):
     
     last_name = StringField("Last Name")
     
+class LoginForm(FlaskForm):
+    username = StringField("Username",
+                           validators=[InputRequired()])
+    
+    password = PasswordField("Password",
+                             validators=[InputRequired()])   
+    
