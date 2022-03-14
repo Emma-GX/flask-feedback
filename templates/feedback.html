@@ -13,7 +13,7 @@
         {% for field in form
             if field.widget.input_type != 'hidden' %}
         <p>
-            {{ field.label }}
+            {{ field.label }}<br>
             {{ field }}
 
             {% for error in field.errors %}
@@ -23,6 +23,7 @@
         {% endfor %}
 
 		<button type="submit">Submit Feedback</button>
+        <button><a href="/users/all">Cancel</a></button>
 	</form>
 </div>
 	

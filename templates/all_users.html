@@ -1,0 +1,18 @@
+{% extends'base.html' %}
+
+{% block title %}All Users{% endblock %}
+
+{% block content %} 
+<div>
+	<h1>List Of All Users</h1>
+
+	<ul>
+        {% for user in users %}
+		<li class="space"><b><i><a href="/users/{{ user.username }}">{{ user.username }}</a></i></b></li>
+		{% endfor %}
+	</ul> 
+</div> 
+
+<button><a href="/posts/all">View All Posts</a></button>
+
+{% endblock %}

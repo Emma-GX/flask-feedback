@@ -26,6 +26,17 @@ p {
     border: 1px solid red;
 }
 
+button.no_padding {
+    display: inline;
+    margin-left: 10px;
+    padding: 2px;
+    font-size: 10px;
+    color: white;
+    background-color: coral;
+    border: 1px solid red;
+    border-radius: 5px;
+ }
+
 button {
     display: inline;
     margin-right: 10px;
@@ -38,3 +49,31 @@ button {
     text-decoration: none; 
     color: black;
  }
+
+ li {
+     list-style-type: none;
+     margin-bottom: 5px;
+ }
+
+ .title {
+     font-weight: bold;
+ }
+
+ .post {
+     border: 1px solid black;
+     width: 300px;
+     border-radius: 5px;
+     padding: 10px;
+     font-style: italic;
+     margin-bottom: 30px;
+ }
+
+ .inline {
+     display: inline;
+     margin-right: 10px;
+ }
+
+ .space {
+     margin-bottom: 5px;
+ }
+

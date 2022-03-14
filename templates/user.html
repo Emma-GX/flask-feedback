@@ -4,29 +4,39 @@
 
 {% block content %} 
 <div>
-	<h1>{{ user.first_name }} {{user.last_name}} Details</h1>
+	<h1>{{ user.first_name }} {{user.last_name}}'s Details</h1>
 
 	<ul>
-		<li>Username: {{ user.username }}</li>
-		<li>First Name: {{ user.first_name }}</li>
-		<li>Last Name: {{ user.last_name }}</li>
-		<li>{{ user.email }}</li>
+		<li><b>Username:</b> <i>{{ user.username }}</i></li>
+		<li><b>Name:</b> <i>{{ user.first_name }} {{ user.last_name }}</i></li>
+		<li><b>Email: </b><i>{{ user.email }}</i></li>
 	</ul> 
 </div> 
 
 <div>
-	<h2>Feedback</h2>
+	<h2 class="inline">Posts</h2><button>
+		
+	<a href="/users/{{ user.username }}/feedback/add">Add New Post</a></button>
+
 	<ul>
 
-        {% for feedback in user.feedbacks %}
-        <li>{{ user.feedbacks.title }}</li>
-		<li>{{ user.feedbacks.content }}</li>
+        {% for post in posts %}
+        <li class="title space">
+			Title: {{ post.title }}
+			{% if session['username'] == post.username %}
+			<form class="inline" action="/feedback/{{post.id}}/update" method="GET">
+				<button class="no_padding" type="submit">Edit</button>
+			</form>
+			{% endif %}
+		</li>
+		<li class="post">{{ post.content }}</li>
         {% endfor %}
     
     </ul>	
 </div>
 <form action="/logout" method="POST">
 	<button type="submit">Log Out</button>
+	<button><a href="/users/all">Go Back</a></button>
 </form>
 	
 {% endblock %}

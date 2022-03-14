@@ -1,6 +1,4 @@
-from crypt import methods
-import re
-from flask import Flask, render_template, redirect, flash, session
+from flask import Flask, render_template, redirect, flash, session, request
 from flask_debugtoolbar import DebugToolbarExtension
 from forms import RegisterForm, LoginForm, FeedbackForm
 
@@ -48,7 +46,7 @@ def register():
         db.session.commit()
         session['username'] = new_user.username
         flash(f"Welcome { new_user.username }! You Successfully Created Your Account", 'success')
-        return redirect('/user')
+        return redirect(f"/users/{username}")
     
     else:
         return render_template('register.html', form=form)
@@ -64,8 +62,33 @@ def show_user(username):
   
     user = User.query.get_or_404(username)
     
+    current_users_posts = Feedback.query.filter_by(username = username)
+    
     if session.get('username') is not None:
-        return render_template("user.html", user=user)        
+        return render_template("user.html", user=user, posts = current_users_posts)        
+    else:
+        flash('Please Log In Before Trying To Access This Page!', 'danger')
+        return redirect('/')
+
+@app.route ('/users/all') 
+def show_all_users():
+    """Shows a list of all users"""
+    
+    if session.get('username') is not None:
+        users = User.query.order_by(User.username.desc()).all()
+        return render_template("all_users.html", users=users)         
+    else:
+        flash('Please Log In Before Trying To Access This Page!', 'danger')
+        return redirect('/')
+      
+
+@app.route('/posts/all')
+def show_all_posts():
+    """Show list of all posts"""
+    
+    if session.get('username') is not None:
+        posts = Feedback.query.all()
+        return render_template('all_feedback.html', posts=posts)        
     else:
         flash('Please Log In Before Trying To Access This Page!', 'danger')
         return redirect('/')
@@ -104,34 +127,78 @@ def log_out_user():
     flash("Goodbye! You have been logged out!", 'success')
     return redirect('/')
        
-       
-# @app.route()
-# def feedback():
-#     """Display a form to add feedback Make sure that only the user who 
-#     is logged in can see this form
-    
-#     Add a new piece of feedback and redirect to /users/<username>
-#     — Make sure that only the user who is logged in can successfully add feedback
-#     """
-    
-    
-    
+        
 @app.route('/users/<username>/feedback/add', methods=['GET', 'POST'])
 def show_user_form(username):
-    """Display a template the shows information about that user 
-    (everything except for their password)
-    
+    """Display a form to a new feedback    
     You should ensure that only logged in users can access this page
     """
     
-  
-    user = User.query.get_or_404(username)
-    
- 
-    
     if session.get('username') is not None:
         form = FeedbackForm()
-        return render_template(f"feedback.html", user=user)        
+        all_posts = Feedback.query.all()
+        if form.validate_on_submit():
+            title = form.title.data
+            content = form.content.data
+            new_post = Feedback(title=title, content=content, username=session["username"])
+            db.session.add(new_post)
+            db.session.commit()
+            flash('Post Created!', 'success')
+            return redirect('/posts/all')
+        return render_template(f"feedback.html", form=form, posts=all_posts)        
     else:
         flash('Please Log In Before Trying To Access This Page!', 'danger')
         return redirect('/')
+    
+    
+@app.route('/feedback/<int:id>/delete', methods=["POST"])
+def delete_feedback(id):
+    """Delete a Post by the Feedback id"""
+    
+    # If someone tries to send a request from insomnia
+    if 'username' not in session:
+        flash("Please Log In First", 'danger')
+        return redirect('/')
+    
+    post = Feedback.query.get_or_404(id)
+    if post.username == session['username']:
+        db.session.delete(post)
+        db.session.commit()
+        flash("Post Deleted", 'success')
+    
+        return redirect("/posts/all")
+    flash("You Don't Have Permission To Delete This Post")
+    return redirect("/posts/all")
+
+
+@app.route('/feedback/<int:id>/update', methods=['GET', 'POST'])
+def edit_post(id):
+    """Show the edit page for a user.
+       Have a cancel button that returns to the detail 
+       page for a user, and a save button that updates 
+       the user.
+       
+        Process the edit form, returning the user to the /users page."""
+    form = FeedbackForm()
+    post = Feedback.query.get_or_404(id)
+    # This takes the values from post and fills the form
+    if request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+        
+    if form.validate_on_submit():
+        post.title = request.form['title']
+        post.content = request.form['content']
+        
+        current_user = post.username
+        
+       
+        db.session.add(post)
+        db.session.commit()
+        flash("Post Updated", 'success')
+        return redirect(f"/users/{current_user}")
+        
+    
+    return render_template('feedback.html', post=post, form=form)
+    
+    
