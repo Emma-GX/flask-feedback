@@ -1,7 +1,32 @@
+**TO CREATE THE DATABASE**
+
+1. You can do it in Linux/Ubuntu
+
+    a. In the terminal type: createdb flask_feedback
+
+
+**TO CREATE THE TABLES**
+
+1. You can use ipython
+
+    a. In the terminal , I use the terminal in VSCode,
+       type: ipython
+    b. Then type: %run app.py
+    c. Then type: db.create_all() 
+
 **YOU WILL NEED TO HAVE POSTGRESQL RUNNING TO USE THIS APP**
 
 In the Ubuntu command line type:
 *sudo service postgresql start*
+
+
+**TO VERIFY THINGS ARE ACTUALLY GOING INTO THE DATABASE**
+
+1. In Ubuntu/Linux type: psql flask_feedback
+
+2. Now you can type the following to see all tables: \dt
+
+3. You can also run querys to see you data here. 
 
 **Flask Feedback**
 
