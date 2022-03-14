@@ -9,12 +9,7 @@
 	<ul>
         {% for post in posts %}
 		<li class="space">
-            <b>{{post.username}}:</b> <i>{{ post.title }}</i>
-            {% if session['username'] == post.username %}
-            <form class="inline" action="/feedback/{{post.id}}/delete" method="POST">
-                <button class="no_padding" type="submit">Delete</button>
-            </form>
-            {% endif %}
+            <b>{{post.username}}:</b> <i>{{ post.title }}</i>          
         </li>
 		{% endfor %}
 	</ul> 

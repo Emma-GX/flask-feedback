@@ -144,7 +144,7 @@ def show_user_form(username):
             db.session.add(new_post)
             db.session.commit()
             flash('Post Created!', 'success')
-            return redirect('/posts/all')
+            return redirect(f"/users/{username}")
         return render_template(f"feedback.html", form=form, posts=all_posts)        
     else:
         flash('Please Log In Before Trying To Access This Page!', 'danger')
@@ -166,7 +166,7 @@ def delete_feedback(id):
         db.session.commit()
         flash("Post Deleted", 'success')
     
-        return redirect("/posts/all")
+        return redirect(f"/users/{post.username}")
     flash("You Don't Have Permission To Delete This Post")
     return redirect("/posts/all")
 

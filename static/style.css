@@ -37,6 +37,17 @@ button.no_padding {
     border-radius: 5px;
  }
 
+ button.no_margin {
+    display: inline;
+    padding: 2px;
+    margin-left: -15px;
+    font-size: 10px;
+    color: white;
+    background-color: coral;
+    border: 1px solid red;
+    border-radius: 5px;
+ }
+
 button {
     display: inline;
     margin-right: 10px;
