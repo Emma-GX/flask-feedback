@@ -11,13 +11,15 @@
 
     a. In the terminal , I use the terminal in VSCode,
        type: ipython
+       
     b. Then type: %run app.py
+    
     c. Then type: db.create_all() 
 
 **YOU WILL NEED TO HAVE POSTGRESQL RUNNING TO USE THIS APP**
 
-In the Ubuntu command line type:
-*sudo service postgresql start*
+1. In the Ubuntu command line type:
+    *sudo service postgresql start*
 
 
 **TO VERIFY THINGS ARE ACTUALLY GOING INTO THE DATABASE**
