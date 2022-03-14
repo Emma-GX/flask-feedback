@@ -14,10 +14,12 @@
 </div> 
 
 <div>
-	<h2 class="inline">Posts</h2><button>
-		
-	<a href="/users/{{ user.username }}/feedback/add">Add New Post</a></button>
-
+	<h2 class="inline">Posts</h2>
+	{% if session['username'] == user.username %}	
+	<form class="inline" action="/users/{{ user.username }}/feedback/add" method="GET">
+		<button class="no_padding" type="submit">Add New post</button>				
+	</form>	
+	{% endif %}
 	<ul>
 
         {% for post in posts %}
