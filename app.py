@@ -160,6 +160,11 @@ def delete_feedback(id):
         flash("Please Log In First", 'danger')
         return redirect('/')
     
+     # This makes sure the person who is deleting the post is the one who created it
+    if post.username != session['username']:
+        flash('Not Allowed')
+        return redirect('/posts/all')
+    
     post = Feedback.query.get_or_404(id)
     if post.username == session['username']:
         db.session.delete(post)
@@ -181,7 +186,11 @@ def edit_post(id):
         Process the edit form, returning the user to the /users page."""
     form = FeedbackForm()
     post = Feedback.query.get_or_404(id)
-    # This takes the values from post and fills the form
+    # This makes sure the person who is updating the post is the one who created it
+    if post.username != session['username']:
+        flash('Not Allowed')
+        return redirect('/posts/all')
+    # This takes the values from post and fills the form    
     if request.method == 'GET':
         form.title.data = post.title
         form.content.data = post.content
