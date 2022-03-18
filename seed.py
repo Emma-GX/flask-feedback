@@ -10,7 +10,7 @@ db.create_all()
 u = User(
     username="BambisMom",
     password="BambisMom",
-    email="emmagomezxolo@gmail.com"
+    email="emmagomezxolo@gmail.com",
     first_name="Emma",
     last_name="Gomez Xolo"
 )
