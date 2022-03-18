@@ -14,3 +14,6 @@ u = User(
     first_name="Emma",
     last_name="Gomez Xolo"
 )
+
+db.session.add(u)
+db.session.commit()
