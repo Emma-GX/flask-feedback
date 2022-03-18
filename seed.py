@@ -1,4 +1,4 @@
-from models import db, User, Feedback
+from models import db, User
 from app import app
 
 # Create all tables
