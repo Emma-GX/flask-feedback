@@ -6,7 +6,15 @@ import os
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///flask_feedback')
+import os
+
+
+uri = os.environ.get('DATABASE_URL', 'postgresql:///flask_feedback')
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+# rest of connection code using the connection string `uri`
+
+app.config['SQLALCHEMY_DATABASE_URI'] = uri
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'MyChihuahuaIsAngryToday')
